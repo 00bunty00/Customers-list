@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import CustomersList from './Components/CustomersList';
+import Navbar from './Components/Navbar';
 
 function App() {
+
+  const [customersList, setCustomersList] = useState([])
+
+  const onAdding = (name) => {
+    let custNo = 1;
+    if(customersList.length){
+      custNo = customersList[customersList.length-1].custNo + 1;
+    }
+    setCustomersList([...customersList, {custNo: custNo, name: name}]);
+  }
+
+  const onDelete = (customer) => {
+    setCustomersList(customersList.filter( e => e!==customer));
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Navbar/>
+      <div className="container my-5">
+        <CustomersList customersList = {customersList} onAdding={onAdding} onDelete={onDelete}/>
+      </div>
+    </>
   );
 }
 
